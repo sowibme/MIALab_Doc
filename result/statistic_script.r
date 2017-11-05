@@ -5,12 +5,14 @@ setwd("/home/martin/CloudStation/Schule/Msc/3Semester/Medical_Image_Analysis_Lab
 # import data
 df1 <- read.csv("results-reference.csv", header = TRUE, sep = ";")
 df2 <- read.csv("results-zcore.csv", header = TRUE, sep = ";")
-df3 <- read.csv("results-median.csv", header = TRUE, sep = ";")
+df3 <- read.csv("results-medianR1.csv", header = TRUE, sep = ";")
+df4 <- read.csv("results-medianR1_Zscore", header = TRUE, sep = ";")
 df1["ALgorithm"] <- "0 Ref"
 df2["ALgorithm"] <- "ZScore"
-df3["ALgorithm"] <- "Median"
+df3["ALgorithm"] <- "MedianR1"
+df4["ALgorithm"] <- "MedianR1-Zscore"
 
-total <- rbind(df1,df2,df3)
+total <- rbind(df1,df2,df3,df4)
 
 #colnames(df1)[colnames(df1)=="DICE"] <- "DICE_REF"
 #colnames(df2)[colnames(df2)=="DICE"] <- "DICE_ZSCORE"
