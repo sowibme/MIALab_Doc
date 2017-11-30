@@ -11,17 +11,23 @@ df5 <- read.csv("results-medianR3.csv", header = TRUE, sep = ";")
 df6 <- read.csv("results-medianR3_Zscore.csv", header = TRUE, sep = ";")
 df7 <- read.csv("results-medianR1_Zscore.csv", header = TRUE, sep = ";")
 df8 <- read.csv("results-Zscore_medianR2.csv", header = TRUE, sep = ";")
+df9 <- read.csv("results_mni_biasfieldcorr.csv", header = TRUE, sep = ";")
+df10 <- read.csv("results_nmi.csv", header = TRUE, sep = ";")
+df11 <- read.csv("results_gaussian_S1.csv", header = TRUE, sep = ";")
 
-df1["ALgorithm"] <- "0 Ref"
-df2["ALgorithm"] <- "7 ZScore"
-df3["ALgorithm"] <- "1 MedianR1"
-df4["ALgorithm"] <- "2 MedianR2"
-df5["ALgorithm"] <- "3 MedianR3"
-df6["ALgorithm"] <- "5 MedianR3-Zscore"
-df7["ALgorithm"] <- "4 MedianR1-Zscore"
-df8["ALgorithm"] <- "8 Zscore-MedianR2"
+df1["ALgorithm"] <-  "02 Ref"
+df2["ALgorithm"] <-  "07 ZScore"
+df3["ALgorithm"] <-  "01 MedianR1"
+df4["ALgorithm"] <-  "02 MedianR2"
+df5["ALgorithm"] <-  "03 MedianR3"
+df6["ALgorithm"] <-  "05 MedianR3-Zscore"
+df7["ALgorithm"] <-  "04 MedianR1-Zscore"
+df8["ALgorithm"] <-  "08 Zscore-MedianR2"
+df9["ALgorithm"] <-  "01 only biasfieldcorr"
+df10["ALgorithm"] <- "00 raw"
+df11["ALgorithm"] <- "09 GaussianS1"
 
-total <- rbind(df1,df2,df3,df4,df5,df6,df7,df8)
+total <- rbind(df1,df2,df3,df4,df5,df6,df7,df8,df9,df10,df11)
 
 #colnames(df1)[colnames(df1)=="DICE"] <- "DICE_REF"
 #colnames(df2)[colnames(df2)=="DICE"] <- "DICE_ZSCORE"
@@ -38,19 +44,19 @@ total <- rbind(df1,df2,df3,df4,df5,df6,df7,df8)
 
 spt1 <- split(total, total$LABEL) 
 
-png('boxplot_Ventricles.png', width = 1200, height =800 , units = 'px')
+png('boxplot_Ventricles.png', width = 1500, height =800 , units = 'px')
 #postscript('boxplot_Ventricles.ps')
 boxplot(DICE ~ ALgorithm,data=spt1[["Ventricles"]],main="Ventricles")
 grid(nx=NA, ny=NULL) #grid over boxplot
 dev.off()
 
-png('boxplot_GreyMatter.png', width = 1200, height =800 , units = 'px')
+png('boxplot_GreyMatter.png', width = 1500, height =800 , units = 'px')
 #postscript('boxplot_GreyMatter.ps')
 boxplot(DICE ~ ALgorithm,data=spt1[["GreyMatter"]],main="GreyMatter")
 grid(nx=NA, ny=NULL) #grid over boxplot
 dev.off()
 
-png('boxplot_WhithMatter.png', width = 1200, height =800 , units = 'px')
+png('boxplot_WhithMatter.png', width = 1500, height =800 , units = 'px')
 #postscript('boxplot_WhithMatter.ps')
 boxplot(DICE ~ ALgorithm,data=spt1[["WhiteMatter"]],main="WhiteMatter")
 grid(nx=NA, ny=NULL) #grid over boxplot
