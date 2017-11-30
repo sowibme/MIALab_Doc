@@ -13,13 +13,13 @@ df7 <- read.csv("results-medianR1_Zscore.csv", header = TRUE, sep = ";")
 df8 <- read.csv("results-Zscore_medianR2.csv", header = TRUE, sep = ";")
 
 df1["ALgorithm"] <- "0 Ref"
-df2["ALgorithm"] <- "ZScore"
-df3["ALgorithm"] <- "MedianR1"
-df4["ALgorithm"] <- "MedianR2"
-df5["ALgorithm"] <- "MedianR3"
-df6["ALgorithm"] <- "MedianR3-Zscore"
-df7["ALgorithm"] <- "MedianR1-Zscore"
-df8["ALgorithm"] <- "Zscore-MedianR2"
+df2["ALgorithm"] <- "7 ZScore"
+df3["ALgorithm"] <- "1 MedianR1"
+df4["ALgorithm"] <- "2 MedianR2"
+df5["ALgorithm"] <- "3 MedianR3"
+df6["ALgorithm"] <- "5 MedianR3-Zscore"
+df7["ALgorithm"] <- "4 MedianR1-Zscore"
+df8["ALgorithm"] <- "8 Zscore-MedianR2"
 
 total <- rbind(df1,df2,df3,df4,df5,df6,df7,df8)
 
