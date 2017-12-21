@@ -18,20 +18,20 @@ df12 <- read.csv("results_gaussian_S3.csv", header = TRUE, sep = ";")
 df13 <- read.csv("results_bilateral_ds4_rs50_with_skull.csv", header = TRUE, sep = ";")
 df14 <- read.csv("results_bilateral_ds4_rs50.csv", header = TRUE, sep = ";")
 
-df1["ALgorithm"] <-  "02 Ref"
-df2["ALgorithm"] <-  "04 ZScore"
-df3["ALgorithm"] <-  "03 MedianR1"
-df4["ALgorithm"] <-  "03 MedianR2"
-df5["ALgorithm"] <-  "03 MedianR3"
-df6["ALgorithm"] <-  "03 MedianR3-Zscore"
-df7["ALgorithm"] <-  "03 MedianR1-Zscore"
-df8["ALgorithm"] <-  "05 Zscore-MedianR2"
-df9["ALgorithm"] <-  "01 only biasfieldcorr"
-df10["ALgorithm"] <- "00 raw"
-df11["ALgorithm"] <- "06 GaussianS1"
-df12["ALgorithm"] <- "06 GaussianS3"
-df13["ALgorithm"] <- "09 Bilateral_wskull"
-df14["ALgorithm"] <- "09 Bilateral"
+df1["ALgorithm"] <-  "02Skull"
+df2["ALgorithm"] <-  "04ZScore"
+df3["ALgorithm"] <-  "03MedianR1"
+df4["ALgorithm"] <-  "03MedianR2"
+df5["ALgorithm"] <-  "03MedianR3"
+df6["ALgorithm"] <-  "04MedianR3-Zscore"
+df7["ALgorithm"] <-  "04MedianR1-Zscore"
+df8["ALgorithm"] <-  "05Zscore-MedianR2"
+df9["ALgorithm"] <-  "01biasfieldcorr"
+df10["ALgorithm"] <- "00raw"
+df11["ALgorithm"] <- "06GaussianS1"
+df12["ALgorithm"] <- "06GaussianS3"
+df13["ALgorithm"] <- "07Bilateral_wskull"
+df14["ALgorithm"] <- "07Bilateral"
 
 total <- rbind(df1,df2,df3,df7,df8,df9,df10,df12,df14)
 
@@ -126,19 +126,19 @@ dev.off()
 total_skull <- rbind(df10,df9,df13)
 spt_skull <- split(total_skull, total_skull$LABEL) 
 
-png('plot/WSkull_boxplot_Ventricles.png', width = 1500, height =800 , units = 'px')
+png('plot/WSkull_boxplot_Ventricles.png')#, width = 1500, height =800 , units = 'px')
 #postscript('boxplot_Ventricles.ps')
 boxplot(DICE ~ ALgorithm,data=spt_skull[["Ventricles"]],main="Ventricles with Skull")
 grid(nx=NA, ny=NULL) #grid over boxplot
 dev.off()
 
-png('plot/WSkull_boxplot_GreyMatter.png', width = 1500, height =800 , units = 'px')
+png('plot/WSkull_boxplot_GreyMatter.png')#, width = 1500, height =800 , units = 'px')
 #postscript('boxplot_GreyMatter.ps')
 boxplot(DICE ~ ALgorithm,data=spt_skull[["GreyMatter"]],main="GreyMatterwith Skull")
 grid(nx=NA, ny=NULL) #grid over boxplot
 dev.off()
 
-png('plot/WSkull_boxplot_WhithMatter.png', width = 1500, height =800 , units = 'px')
+png('plot/WSkull_boxplot_WhithMatter.png')#, width = 1500, height =800 , units = 'px')
 #postscript('boxplot_WhithMatter.ps')
 boxplot(DICE ~ ALgorithm,data=spt_skull[["WhiteMatter"]],main="WhiteMatter with Skull")
 grid(nx=NA, ny=NULL) #grid over boxplot
@@ -148,6 +148,9 @@ dev.off()
 ## All used this
 total_std <- rbind(df10,df9,df2,df1)
 spt_std <- split(total_std, total_std$LABEL) 
+
+png('plot/default_boxplot_Ventricles.png', width = 1500, height =800 , units = 'px')
+ggplot(data = total, aes(x=ALgorithm, y=DICE)) + geom_boxplot(aes(fill=LABEL))
 
 png('plot/default_boxplot_Ventricles.png', width = 1500, height =800 , units = 'px')
 #postscript('boxplot_Ventricles.ps')
@@ -171,3 +174,26 @@ dev.off()
 
 
 
+#png('plot/overview.png', width = 1000, height =800 , units = 'px')
+postscript('plot/overview.eps')
+p <- ggplot(data = total, aes(x=ALgorithm, y=DICE)) + geom_boxplot(aes(fill=LABEL))
+p + ylim(0,0.9) + ggtitle("Overview")  +theme(plot.title = element_text(hjust = 0.5)) # +scale_fill_grey(start = 0, end = .9)
+dev.off()
+
+#png('plot/default.png', width = 1000, height =800 , units = 'px')
+postscript('plot/default.eps')
+p <- ggplot(data = total_std, aes(x=ALgorithm, y=DICE)) + geom_boxplot(aes(fill=LABEL))
+p + ylim(0,0.9) + ggtitle("Default")  +theme(plot.title = element_text(hjust = 0.5)) #+scale_fill_grey(start = 0, end = .9)
+dev.off()
+
+#png('plot/default.png', width = 1000, height =800 , units = 'px')
+postscript('plot/boxplot_gaussian.eps')
+p <- ggplot(data = total_sgaussian, aes(x=ALgorithm, y=DICE)) + geom_boxplot(aes(fill=LABEL))
+p + ylim(0,0.9) + ggtitle("Gaussian")  +theme(plot.title = element_text(hjust = 0.5)) #+scale_fill_grey(start = 0, end = .9)
+dev.off()
+
+#png('plot/default.png', width = 1000, height =800 , units = 'px')
+postscript('plot/boxplot_median.eps')
+p <- ggplot(data = total_median, aes(x=ALgorithm, y=DICE)) + geom_boxplot(aes(fill=LABEL))
+p + ylim(0,0.9) + ggtitle("Median")  +theme(plot.title = element_text(hjust = 0.5)) #+scale_fill_grey(start = 0, end = .9)
+dev.off()
