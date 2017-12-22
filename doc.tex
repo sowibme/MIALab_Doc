@@ -476,21 +476,30 @@ IEEE, IEEEtran, journal, \LaTeX, paper, template.
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
 \IEEEPARstart{T}{o} segment the different tissue from the brain.
-We have a set of MRI (magnetic resonance imaging) Images.
+We have a set of magnetic resonance imaging (MRI) images.
 With a machine learning algorithm, we classified the different tissue.
 We use an existing pipeline to generate the model and test it with the Dice coefficient.
 In this research, we look in detail on the Preprocessing part.
 Which influence has the different filter and preprocessing steps on the outcoming results.
 
+\subsection{Segmentation of medical images}
+The task of finding all the pixels (or voxels in the 3D case) of a medical image which belong to a given tissue of interest is commonly referred to as segmentation. The outputs of the segmentation of a medical image are normally masks for the different tissues of interest which contain binary information of which regions of an image belong to the specific tissue type. In our case the images are MRI images of healthy brains which are segmented into the classes whitematter, greymatter and the ventricles which is shown in figure \ref{fig:brainseg}. Segmentation of medical images can be done manually or with the aid of software in a manual, semi-automatic or fully-automatic manner. Often the output of segmentation pipeline and algorithms is compared and validated against segmentations done by an expert (e.g. radiologist) which regarded as the ground truth.
 
-\subsection{Subsection Heading Here}
-Subsection text here.
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{img/mer}
+\caption{Example segmentation of a healthy brain T2 weighted image: On the left side is the unsegmented image, on the right side the segmentation with white being classified as ventricles, darkgrey the whitematter and lightgray the greymatter.}
+\label{fig:brainseg}
+\end{figure}
+
+\subsection{Value of automatic segmentation}
+A solid segmentation of medical images into regions of interest is the key and basic requirement for many further tasks. For instance any realtime computer assisted surgery or image guided surgery relies on the solid segmentation of medical imaging. Since medical images as computed tomography scans or MRI images often contain a multitude of 2D images (called Z-slices), the manual segmentation takes precious time of an expert and is a very tedious task. The idea of robust and autonomous segmentation of medical images is therefore  very appealing.
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+\subsection{Preprocessing}
+In most segmentation algorithms or integrated pipelines there is an early stage which deals with the preparation of the data. This is referred to as preprocessing stage or simply preprocessing. In this stage, the raw data is edited, filtered and transformed in order to remove noise and biases and to make the data more comparable. Good preprocessing of the data will make the later stages of the segmentation pipeline to perform better and will thus increase the whole segmentation performance.
 
 
 % An example of a floating figure using the graphicx package.
