@@ -646,7 +646,7 @@ A commonly used performance measure for medical image segmentations is the dice 
 
 \subsection{Computation order}
 
-For the test, we have always applied the filter after Brasfield correction and skull stripping.
+For the test, we have always applied the filter after the bias field correction and skull stripping.
 If we have applied more than one filter, then we label it in the order we have calculated. That means when we wrote Zscore-Median. We have first used the Zscore and then the median.
 
 MedianR2 means Median with radius 2; the same is by GaussianS3 that indicate Gaussian with Sigma is 3.
@@ -678,13 +678,20 @@ MedianR2 means Median with radius 2; the same is by GaussianS3 that indicate Gau
 \end{figure*}
 
 \section{Discussion}
-Discussion goes here
+
+We can see that the preprocessing step has a large influence on the output. When we applied the Skull striping and the Z-score we have very good results.
+We were surprised that the bias field correction does not make the dice better in our case it has a negative impact.
+He makes the variance larger.
+
+The Median filter with Radius three helps a lot to classified better the ventricles. When we look at the white and grey matter the median, how also the Gaussian, do not improve the results. That allows an assumption that in this part we haven't gaussian noise or outliers.
+
+The bilateral filter has two tuning parameters, which we have not tuned actually. Maybe with the optimal parameter, we also go in the range from the Z-score.
 
 
 \section{Conclusion}
-The conclusion goes here.
+With the preprocessing step is it easy to tune your outcome. But you make a compromise for the different class. The filter who push up the ventricle reduce the dice from the other class or the other way around. 
 
-
+The bias field correction was in our case not useful and can be removed from the pipeline. 
 
 
 

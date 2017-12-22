@@ -1,6 +1,9 @@
 
+
 # set working directory
 setwd("/home/martin/CloudStation/Schule/Msc/3Semester/Medical_Image_Analysis_Lab/work/MIALab_Doc/result")
+
+library("ggplot2")
 
 # import data
 df1 <- read.csv("results-reference.csv", header = TRUE, sep = ";")
@@ -33,7 +36,7 @@ df12["ALgorithm"] <- "06GaussianS3"
 df13["ALgorithm"] <- "07Bilateral_wskull"
 df14["ALgorithm"] <- "07Bilateral"
 
-total <- rbind(df1,df2,df3,df7,df8,df9,df10,df12,df14)
+total <- rbind(df1,df2,df5,df7,df8,df9,df10,df12,df14)
 
 #colnames(df1)[colnames(df1)=="DICE"] <- "DICE_REF"
 #colnames(df2)[colnames(df2)=="DICE"] <- "DICE_ZSCORE"
@@ -72,7 +75,7 @@ dev.off()
 
 
 ## Median Plot
-total_median <- rbind(df3,df4,df5)
+total_median <- rbind(df3,df4,df5,df6,df7)
 spt_median <- split(total_median, total_median$LABEL) 
 
 png('plot/median_boxplot_Ventricles.png', width = 1500, height =800 , units = 'px')
