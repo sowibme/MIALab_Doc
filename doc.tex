@@ -601,7 +601,7 @@ We split this into two groups a training and test set. The ratio between this to
 The main goal of this work is to evaluate and quantize the influence of of different preprocessing steps on the overall segmentation performance of the described pipeline. Our basic strategy was to first disable all preprocessing and run the segmentation pipeline of the given data. The result of this run was then considered to be the reference segmentation performance. In further runs, different filters and operations have then been applied to the image data during the preprocessing stage. The segmentation results of these runs are then compared to the reference segmentation performance. This technique allows to get an idea of the influence on the segmentation performance of specific preprocessing steps.
 
 \subsection{Dataset}
-The given dataset, on which all the experiments have been conducted on, consists of healthy brain MRI T1&T2 weighted images of one hundred patients. Additonally for all the brain images seperate ground truth masks are available for whitematter, greymatter and the ventricles. For all experiments the dataset was split into a training and test set with a 70/30 ratio.
+The given dataset, on which all the experiments have been conducted on, consists of healthy brain MRI T1 and T2 weighted images of one hundred patients. Additonally for all the brain images seperate ground truth masks are available for whitematter, greymatter and the ventricles. For all experiments the dataset was split into a training and test set with a 70/30 ratio.
 
 \subsection{Reference}
 TODO
@@ -611,8 +611,12 @@ TODO
 \subsection{Bias field correction}
 TODO
 
-\subsection{Normalization}
-TODO
+\subsection{Z Score Normalization}
+In order to make data more comparable it is commonly normalized. To achieve this, the data $x$ is transformed according to equation \ref{eq:ZSCORE} with $\mu$ being the mean and $\sigma$ the standard deviation of the data. When applied to an image, this results in the intensity distribution of the image being zero centered with $\sigma = 1$.
+\begin{equation}
+    \label{eq:ZSCORE}
+    z = \frac{x - \mu}{\sigma}{}
+\end{equation}
 
 \subsection{Filtering}
 Different filters have been applied to the images during the preprocessing stage.
@@ -621,14 +625,15 @@ In order to smooth the data simple gaussian blurring, with different values for 
 \subsubsection{Median}
 Median filtering can be used to remove impulse noise and has the benefit to keep information about edges in the data. Mean filtering or Gaussian filtering tends to blur the edges.
 \subsubsection{Bilateral}
+TODO
 
 \subsection{Performance Measure}
-A commonly used performance measure for medical image segmentations is the dice similarity coefficient (DSC). The DSC is a good estimator about the overall performance and exactness of a segmentation. The coefficient is  calculated according to equation \ref{eq:DSC}, with $S$ being the segmented voxels and $G$ the voxels of the ground truth. The DSC is obtained by dividing the doubled intersection between $S$ and $G$ by the sum of both volumes. A DSC value of 1.0 corresponds to both volumes $S$ and $G$ overlapping completely and is therefore the result of a pefect segmentation.
+A commonly used performance measure for medical image segmentations is the dice similarity coefficient (DSC). The DSC is a good estimator about the overall performance and exactness of a segmentation. The coefficient is  calculated according to equation \ref{eq:DSC}, with $S$ being the segmented voxels and $G$ the voxels of the ground truth. The DSC is obtained by dividing the doubled intersection between $S$ and $G$ by the sum of both volumes. A DSC value of 1.0 corresponds to both volumes $S$ and $G$ overlapping completely and is therefore the result of a pefect segmentation. Figure \ref{fig:dice} depicts the 2D case and the sets consist of pixels. In the case of MRI data we are dealing with 3D sets which consist of voxels. For each of the brain regions we are interested in, namely whitematter, greymatter and the ventricles, the DSC is calculated seperately using seperate ground truths $G$ and segmented voxels $S$.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=2.5in]{img/dice}
-\caption{Regions involved to calculate the DSC. $S$ is the set of segmented pixels and therefore the output of the segmentation pipeline. $G$ is the set of pixels of the ground truth data. The intersection between the two sets is then used to calculate the DSC value. The figure depicts the 2D case and the sets consist of pixels. In the case of MRI data we are dealing with 3D sets which consist of voxels. For each of the brain regions we are interested in, namely whitematter, greymatter and the ventricles, the DSC is calculated seperately using seperate ground truths $G$ and segmented voxels $S$.}
+\caption{Regions involved to calculate the DSC. $S$ is the set of segmented pixels and therefore the output of the segmentation pipeline. $G$ is the set of pixels of the ground truth data.$S$, $G$ and the intersection between the two sets is used to calculate the DSC value.}
 \label{fig:dice}
 \end{figure}
 
