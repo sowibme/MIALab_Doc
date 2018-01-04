@@ -483,7 +483,7 @@ In this research, we look in detail on the Preprocessing part.
 Which influence has the different filter and preprocessing steps on the outcoming results.
 
 \subsection{Segmentation of medical images}
-The task of finding all the pixels (or voxels in the 3D case) of a medical image which belong to a given tissue of interest is commonly referred to as segmentation. The outputs of the segmentation of a medical image are normally masks for the different tissues of interest which contain binary information of which regions of an image belong to the specific tissue type. In our case the images are MRI images of healthy brains which are segmented into the classes whitematter, greymatter and the ventricles which is shown in figure \ref{fig:brainseg}. Segmentation of medical images can be done manually or with the aid of software in a manual, semi-automatic or fully-automatic manner. Often the output of segmentation pipeline and algorithms is compared and validated against segmentations done by an expert (e.g. radiologist) which regarded as the ground truth.
+The task of finding all the pixels (or voxels in the 3D case) of a medical image which belong to a given tissue of interest is commonly referred to as segmentation. The outputs of the segmentation of a medical image are normally masks for the different tissues of interest which contain binary information of which regions of an image belong to the specific tissue type. In our case the images are MRI images of healthy brains which are segmented into the classes whitematter, greymatter and the ventricles which is shown in figure \ref{fig:brainseg}. Segmentation of medical images can be done manually or with the aid of software in a manual, semi-automatic or fully-automatic manner. Often the output of segmentation pipelines and algorithms are compared and validated against segmentations done by an expert (e.g. radiologist) which are referred to as the ground truth.
 
 \begin{figure}[!t]
 \centering
@@ -493,7 +493,7 @@ The task of finding all the pixels (or voxels in the 3D case) of a medical image
 \end{figure}
 
 \subsection{Value of automatic segmentation}
-A solid segmentation of medical images into regions of interest is the key and basic requirement for many further tasks. For instance any realtime computer assisted surgery or image guided surgery relies on the solid segmentation of medical imaging. Since medical images as computed tomography scans or MRI images often contain a multitude of 2D images (called Z-slices), the manual segmentation takes precious time of an expert and is a very tedious task. The idea of robust and autonomous segmentation of medical images is therefore  very appealing.
+A solid segmentation of medical images into regions of interest is the key and basic requirement for many further tasks. For instance any realtime computer assisted surgery or image guided surgery relies on the solid segmentation of medical imaging. Since medical images as computed tomography scans or MRI images often contain a multitude of 2D images (called Z-slices), the manual segmentation takes precious time of an expert and is a very tedious task. The idea of robust and autonomous segmentation of medical images is therefore  very appealing. The importance is further emphasized due to the fact that segmented and labelled data can be used together with supervised machine learning algorithms to train models and make predictions for all sorts of applications.
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
@@ -598,27 +598,31 @@ In most segmentation algorithms or integrated pipelines there is an early stage 
 
 
 \section{Materials and Methods}
-Material and Methods go here
+In this chapter the methods used are briefly described. All the experiments have been conducted using the image segmentation pipeline and the dataset which were provided. For the individual experiments only the pre preprocessing part of the pipeline was adjusted, all the other stages were left untouched. As the calculations, depending on the experiment, took very long to complete, the most part of them were executed on the university cluster.
 
 \subsection{Overview and pipeline}
-
-For all calculation, we have used a dataset with 100 labelled MRI Images. The MRI Images consist of T1 and T2 Images.
-We split this into two groups a training and test set. The ratio between this to groups ist 70/30.
-
+The segmentation pipeline provided is written in python and uses a decision tree for the classification. Figure \ref{fig:pipeline} shows an overview of the different stages of the pipeline. As mentioned before, this work is only concerned with the influence of preprocessing stage, and therefore all other stages of the pipeline have not been touched.
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.5\textwidth]{img/pipeline}
+\caption{Overview of the different stages of the given segmentation pipeline. The MRI images are aligned in the registration stage and preprocessed. In a next stepg various features are extracted to either train a model during train phase or for the classification in the test phase. After classification postprocessing is applied to increase the segmentation quality.}
+\label{fig:pipeline}
+\end{figure}
 
 \subsection{Goal and strategy}
-The main goal of this work is to evaluate and quantize the influence of of different preprocessing steps on the overall segmentation performance of the described pipeline. Our basic strategy was to first disable all preprocessing and run the segmentation pipeline of the given data. The result of this run was then considered to be the reference segmentation performance. In further runs, different filters and operations have then been applied to the image data during the preprocessing stage. The segmentation results of these runs are then compared to the reference segmentation performance. This technique allows to get an idea of the influence on the segmentation performance of specific preprocessing steps.
+The main goal of this work is to evaluate and quantize the influence of of different preprocessing steps on the overall segmentation performance of the described pipeline. Our basic strategy was to first disable all preprocessing and run the segmentation pipeline on the given data. The result of this run was then considered to be the reference segmentation performance. In further runs, different filters and operations have then been applied to the image data during the preprocessing stage. The segmentation results of these runs are then compared to the reference segmentation performance. This technique allows to get an idea of the influence on the segmentation performance of specific preprocessing steps.
 
 \subsection{Dataset}
-The given dataset, on which all the experiments have been conducted on, consists of healthy brain MRI T1 and T2 weighted images of one hundred patients. Additonally for all the brain images seperate ground truth masks are available for whitematter, greymatter and the ventricles. For all experiments the dataset was split into a training and test set with a 70/30 ratio.
+The given dataset, on which all the experiments have been conducted on, consists of unrelated and healthy brain MRI T1 and T2 weighted images of one hundred patients out of the Human Connectome Project data set. Additonally for all the brain images seperate ground truth masks are available for whitematter, greymatter and the ventricles. For all experiments the dataset was split into a training and test set with a 70/30 ratio. The images of the dataset are non-skull stripped and defaced for anonymization, which can be seen on left image of figure \ref{fig:brainseg}.
 
 \subsection{Reference}
-TODO
+As a reference base for comparison the unprocessed MRI images have been segmented with the given pipeline. Therefore the reference segmentation performance is the result of feeding the raw (but registered) images directly into the later stages of the pipeline without any preprocessing (no bias field correction, no skull stripping, no filtering). The output of this is refferred to as \textit{00raw} in figure \ref{fig:result}.
+
 \subsection{Skull stripping}
-TODO
+The skulls in the images are removed also during the preprocessing stage as they are of no interest for our purposes.
 
 \subsection{Bias field correction}
-TODO
+MRI images are often corrupted by a bias field signal which is induced by inhomogeneities of the magnetic fields of the MRI device. There exist strategies to reconstruct and simulate this bias field and then correct grayscale image accordingly during preprocessing. In our case we were also provied with the already bias field corrected versions of the image data. The performance of the segmentation pipeline with only bias field corrected data (no further preprocessing) can be seen as \textit{01biasfieldcorr} in figure \ref{fig:result}. All calculations except the reference (\textit{00raw}) were conducted on the bias field corrected data.
 
 \subsection{Z Score Normalization}
 In order to make data more comparable it is commonly normalized. To achieve this, the data $x$ is transformed according to equation \ref{eq:ZSCORE} with $\mu$ being the mean and $\sigma$ the standard deviation of the data. When applied to an image, this results in the intensity distribution of the image being zero centered with $\sigma = 1$.
@@ -642,7 +646,7 @@ A commonly used performance measure for medical image segmentations is the dice 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=2.5in]{img/dice}
-\caption{Regions involved to calculate the DSC. $S$ is the set of segmented pixels and therefore the output of the segmentation pipeline. $G$ is the set of pixels of the ground truth data.$S$, $G$ and the intersection between the two sets is used to calculate the DSC value.}
+\caption{Regions involved to calculate the DSC. $S$ is the set of segmented pixels and therefore the output of the segmentation pipeline. $G$ is the set of pixels of the ground truth data.$S$, $G$ and the intersection between the two sets are used to calculate the DSC value.}
 \label{fig:dice}
 \end{figure}
 
@@ -683,7 +687,7 @@ MedianR2 means Median with radius 2; the same is by GaussianS3 that indicate Gau
 %\label{fig_second_case}
 }
 \caption{Dice Boxplot}
-%\label{fig_sim}
+\label{fig:result}
 \end{figure*}
 
 \section{Discussion}
