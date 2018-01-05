@@ -433,7 +433,7 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-The abstract goes here.
+As a practical group work to get used to medical image segmentation we received an image segmentation pipeline which can segment MRI images into the classes greymatter, whitematter and ventricles. The main goal of our work is to asses the influence of preprocessing, an early stage of the segmentation pipeline, on the segmentation performance. Applying different filters and transformation to the raw images we conducted several experiments of different degrees of preprocessing of the data. The experiments have shown that filter performance is depenedent on the target region and that bias field correction does not seem to have a big influence on the segmentation performance.
 \end{abstract}
 
 
@@ -633,7 +633,7 @@ In order to smooth the image data simple gaussian blurring, with different value
 \subsubsection{Median}
 Median filtering can be used to remove impulse noise and has the benefit to keep information about edges in the data. Median filters of different kernel sizes have been tested in the experiments.
 \subsubsection{Bilateral}
-Bilateral filtering is a sophisticated filter which averages and blurrs smooth regions of an image while preventing averaging across edges. Figure \ref{fig:bilat} shows the working principle: Bilateral filtering combines range and domain filtering and uses a similarity function to prevent sharp edges from being averaged out. Detailed information can be found on the website \cite{bilateral}.
+Bilateral filtering is a sophisticated filter which averages and blurrs smooth regions of an image while preventing averaging across edges. Figure \ref{fig:bilat} shows the working principle: Bilateral filtering combines range and domain filtering and uses a similarity function to prevent sharp edges from being averaged out. We only tested one set of parameters ($\sigma_{Range} = 50$ and $\sigma_{Domain}= 4$). Detailed information about bilateral filtering can be found on the website \cite{bilateral}.
 
 \begin{figure}[!t]
 \centering
@@ -658,22 +658,13 @@ A commonly used performance measure for medical image segmentations is the dice 
 \end{equation}
 
 \section{Results}
-
-\subsection{Computation order}
-
-For the test, we have always applied the filter after the bias field correction and skull stripping.
-If we have applied more than one filter, then we label it in the order we have calculated. That means when we wrote Zscore-Median. We have first used the Zscore and then the median.
-
-MedianR2 means Median with radius 2; the same is by GaussianS3 that indicate Gaussian with Sigma is 3.
+Figure \ref{fig:result} contains segmentation performances for all the conducted experiments. For the different experiments, the filters and preprocessing steps have been applied to the already bias field corrected and skull stripped data. In the case that more than one filter or preprocessing step was applied, the names of the steps are mentioned in the executed order. For instance \textit{Zscore-MedianR2} refers to first applying Z score normalization to the image, and then filtering it with a median filter with kernel size 2. The calculation times for the different experiments varied a lot: The experiments where gaussian and median filtering was applied took about 1 hour to complete. In contrast, bilateral filtering almost tripled this calculation time, ending only after about 3 hours. As we also had an already skull stipped and bias field corrected dataset, we do not have the exact calculation times for these. We were however told that it took several hours for the bias field correction of the dataset.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.49\textwidth]{png/preprocessing-pipeline.png}
 \caption{Computation order}
 \end{figure}
-
-
-
 
 \begin{figure*}[!h]
 \centering
@@ -688,25 +679,18 @@ MedianR2 means Median with radius 2; the same is by GaussianS3 that indicate Gau
 \subfloat[Median in detail]{\includegraphics[width=0.34\textwidth, angle=-90]{result/plot/boxplot_median.eps}
 %\label{fig_second_case}
 }
-\caption{Dice Boxplot}
+\caption{Boxplots for the segmentation performances of the different experiments. (a) shows an overview, (b) and (c) are the detailed views for the gaussian and median experiments respectively.}
 \label{fig:result}
 \end{figure*}
 
 \section{Discussion}
+One can see that the preprocessing step has indeed an influence on the segmentation output.
+Experiment \textit{02Skull} compared to the reference calculation \textit{00raw} shows that the influence of skull stripping is the most significant of all our experiments. It increases all the dice coefficients and reduces the variances for the grey- and whitematter substantially. Conversely we were quite surprised that bias field correction (\textit{01biasfieldcorr}) has the oppisite effect: Although increasing the dice for the ventricles and greymatter a little bit, all the variances have been increased. With the fact in mind that bias field correction took several hours of computation, this does not seem to be a very efficient preprocessing step.
 
-We can see that the preprocessing step has a large influence on the output. When we applied the Skull striping and the Z-score we have very good results.
-We were surprised that the bias field correction does not make the dice better in our case it has a negative impact.
-He makes the variance larger.
-
-The Median filter with Radius three helps a lot to classified better the ventricles. When we look at the white and grey matter the median, how also the Gaussian, do not improve the results. That allows an assumption that in this part we haven't gaussian noise or outliers.
-
-The bilateral filter has two tuning parameters, which we have not tuned actually. Maybe with the optimal parameter, we also go in the range from the Z-score.
-
+The median filter with kernel size three helps to increase the segmentation performance of the ventricles. But when looked at the white- and greymatter the median as well as the gaussian filter do not help improve the performance. That allows an assumption that in this part we haven't gaussian noise or outliers.
 
 \section{Conclusion}
-With the preprocessing step is it easy to tune your outcome. But you make a compromise for the different class. The filter who push up the ventricle reduce the dice from the other class or the other way around. 
-
-The bias field correction was in our case not useful and can be removed from the pipeline. 
+With good and approrpiate preprocessing the segmentation performance can be increased. The experiments however have shown that while the performance for a certain region, for instance the ventricles, may be increased with the use of a filter the contrary may be true to the other regions: The filters which help increasing the the ventricle segmentation reduce also the dices from the other class or the other way around. The impact of bias field correction was in our case not significant and we would consider to drop it in future experiments. Bilateral filtering did not lead to any significant increase in the segmentation performance. This is however most certainly due to a wrong paramenter setting. As the calculation with the bilateral filter took several hours, we only conducted one experiment with the default parameters. To have a better understanding of the performance we should run more experiments and try to tune the paramenters. While we have performed some expermients, there still exist a multitude if filters and techniques to be examined as a potential beneficial preprocessing step.
 
 
 
