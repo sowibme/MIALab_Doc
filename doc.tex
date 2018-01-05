@@ -82,7 +82,7 @@
 % When switching from latex to pdflatex and vice-versa, the compiler may
 % have to be run twice to clear warning/error messages.
 
-
+\usepackage{url}
 
 
 
@@ -358,7 +358,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{The influence of the preprocessing \\ on the Machine Learning}
+\title{Influence of preprocessing on automatic brain image segmentation performance}
 %
 %
 % author names and IEEE memberships
@@ -400,7 +400,7 @@
 
 
 % The paper headers
-\markboth{Medical Image Analysis Lab, ~19, Dezember~2017}%
+\markboth{Medical Image Analysis Lab, december 2017}%
 {Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for IEEE Journals}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
@@ -438,9 +438,9 @@ The abstract goes here.
 
 
 % Note that keywords are not normally used for peerreview papers.
-\begin{IEEEkeywords}
-IEEE, IEEEtran, journal, \LaTeX, paper, template.
-\end{IEEEkeywords}
+%\begin{IEEEkeywords}
+%IEEE, IEEEtran, journal, \LaTeX, paper, template.
+%\end{IEEEkeywords}
 
 
 
@@ -475,12 +475,7 @@ IEEE, IEEEtran, journal, \LaTeX, paper, template.
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{o} segment the different tissue from the brain.
-We have a set of magnetic resonance imaging (MRI) images.
-With a machine learning algorithm, we classified the different tissue.
-We use an existing pipeline to generate the model and test it with the Dice coefficient.
-In this research, we look in detail on the Preprocessing part.
-Which influence has the different filter and preprocessing steps on the outcoming results.
+\IEEEPARstart{T}{he} segmentation of medical images, as for example magnetic resonance imaging (MRI) images, is an important step to extract data needed for image guided navigation, train machine learning algorithms and many other applications. In this work a already implemented segmentation pipeline was used to segment MRI brain images of a dataset with the aim to get an estimate of how preprocessing of the images influences the final segmentation outcome. Different filters and other preprocessing techniques have been applied to the images before segmentation.
 
 \subsection{Segmentation of medical images}
 The task of finding all the pixels (or voxels in the 3D case) of a medical image which belong to a given tissue of interest is commonly referred to as segmentation. The outputs of the segmentation of a medical image are normally masks for the different tissues of interest which contain binary information of which regions of an image belong to the specific tissue type. In our case the images are MRI images of healthy brains which are segmented into the classes whitematter, greymatter and the ventricles which is shown in figure \ref{fig:brainseg}. Segmentation of medical images can be done manually or with the aid of software in a manual, semi-automatic or fully-automatic manner. Often the output of segmentation pipelines and algorithms are compared and validated against segmentations done by an expert (e.g. radiologist) which are referred to as the ground truth.
@@ -632,20 +627,27 @@ In order to make data more comparable it is commonly normalized. To achieve this
 \end{equation}
 
 \subsection{Filtering}
-Different filters have been applied to the images during the preprocessing stage.
+The following different filters have been applied to the images during the preprocessing stage.
 \subsubsection{Gaussian}
-In order to smooth the data simple gaussian blurring, with different values for sigma, has been applied to the images.
+In order to smooth the image data simple gaussian blurring, with different values for sigma, has been applied to the images. Mean filtering or Gaussian filtering tends to blur the edges of an image. For sigma the values 1 and 3 have been tested, with sigma 3 corresponding to a more blurry and smoother image.
 \subsubsection{Median}
-Median filtering can be used to remove impulse noise and has the benefit to keep information about edges in the data. Mean filtering or Gaussian filtering tends to blur the edges.
+Median filtering can be used to remove impulse noise and has the benefit to keep information about edges in the data. Median filters of different kernel sizes have been tested in the experiments.
 \subsubsection{Bilateral}
-TODO
+Bilateral filtering is a sophisticated filter which averages and blurrs smooth regions of an image while preventing averaging across edges. Figure \ref{fig:bilat} shows the working principle: Bilateral filtering combines range and domain filtering and uses a similarity function to prevent sharp edges from being averaged out. Detailed information can be found on the website \cite{bilateral}.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{img/bilat}
+\caption{Bilateral filtering: In the middle image the similarity function is shown. The similarity function is used to determine which pixels should be smoothed. The left image is prior and the right after bilateral filtering has been applied. The output is a smoothed version of the input, but with almost all edge information remaining. Image from the  University of Edinburgh (website \cite{bilateral}).}
+\label{fig:bilat}
+\end{figure}
 
 \subsection{Performance Measure}
 A commonly used performance measure for medical image segmentations is the dice similarity coefficient (DSC). The DSC is a good estimator about the overall performance and exactness of a segmentation. The coefficient is  calculated according to equation \ref{eq:DSC}, with $S$ being the segmented voxels and $G$ the voxels of the ground truth. The DSC is obtained by dividing the doubled intersection between $S$ and $G$ by the sum of both volumes. A DSC value of 1.0 corresponds to both volumes $S$ and $G$ overlapping completely and is therefore the result of a pefect segmentation. Figure \ref{fig:dice} depicts the 2D case and the sets consist of pixels. In the case of MRI data we are dealing with 3D sets which consist of voxels. For each of the brain regions we are interested in, namely whitematter, greymatter and the ventricles, the DSC is calculated seperately using seperate ground truths $G$ and segmented voxels $S$.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=2.5in]{img/dice}
+\includegraphics[width=1.5in]{img/dice}
 \caption{Regions involved to calculate the DSC. $S$ is the set of segmented pixels and therefore the output of the segmentation pipeline. $G$ is the set of pixels of the ground truth data.$S$, $G$ and the intersection between the two sets are used to calculate the DSC value.}
 \label{fig:dice}
 \end{figure}
@@ -734,11 +736,7 @@ The bias field correction was in our case not useful and can be removed from the
 %
 
 % use section* for acknowledgment
-\section*{Acknowledgment}
-
-
-The authors would like to thank...
-
+%\section*{Acknowledgment}
 
 % Can use something like this to put references on a page
 % by themselves when using endfloat and the captionsoff option.
@@ -770,13 +768,12 @@ The authors would like to thank...
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-%\begin{thebibliography}{1}
-%
-%\bibitem{IEEEhowto:kopka}
-%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-%
-%\end{thebibliography}
+\begin{thebibliography}{1}
+\bibitem{bilateral} 
+University of Edinburgh: Bilateral Filtering for Gray and Color Images,
+\\\texttt{\url{http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html}}
+
+\end{thebibliography}
 
 % biography section
 % 
